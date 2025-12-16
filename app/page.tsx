@@ -1,7 +1,7 @@
 export default function Home() {
   return (
     <>
-      <div>Hello 15.3.1</div>
+      <div>16.0.10</div>
     </>
   );
 }
