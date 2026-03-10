@@ -1,7 +1,6 @@
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
+import nextConfig from 'eslint-config-next';
 import prettier from 'eslint-plugin-prettier';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,47 +13,33 @@ const compat = new FlatCompat({
   allConfig: js.configs.all,
 });
 
-export default [
-  ...compat.extends(
-    'next/core-web-vitals',
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'plugin:tailwindcss/recommended',
-  ),
+const config = [
+  ...nextConfig,
+  ...compat.extends('plugin:tailwindcss/recommended', 'prettier'),
   {
     plugins: {
       prettier,
-      '@typescript-eslint': typescriptEslint,
     },
-
-    languageOptions: {
-      parser: tsParser,
-    },
-
     rules: {
-      'prettier/prettier': [
-        'warn',
-        {
-          endOfLine: 'auto',
-        },
-      ],
-
+      'prettier/prettier': ['warn', { endOfLine: 'auto' }],
+      'tailwindcss/no-contradicting-classname': 'error',
+      'tailwindcss/classnames-order': 'off',
+      'react/self-closing-comp': ['error', { component: true, html: true }],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    },
+  },
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'tailwindcss/no-contradicting-classname': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
-      'no-useless-escape': 'off',
-      'no-var': 'off',
-
-      'react/self-closing-comp': [
-        'error',
-        {
-          component: true,
-          html: true,
-        },
-      ],
     },
   },
 ];
+
+export default config;

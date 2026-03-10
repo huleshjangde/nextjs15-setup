@@ -1,27 +1,32 @@
 {
-  "name": "apis",
+  "name": "nextjs-template",
   "version": "0.1.0",
   "private": true,
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,mdx,css}": [
+      "prettier --write"
+    ]
   },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "flt": "npm run format:write && npm run lint:fix",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx,json,md,css}\"",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx,json,md,css}\"",
-    "lint:fix": "next lint --fix",
+    "check": "bun run lint && bun run format:check",
+    "fix": "bun run lint:fix && bun run format:write",
     "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.2",
     "@radix-ui/react-separator": "^1.1.2",
     "@radix-ui/react-slot": "^1.1.1",
-    "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.49.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.18.0",
